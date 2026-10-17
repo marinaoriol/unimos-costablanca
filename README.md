@@ -22,3 +22,10 @@ Antes de modificar DNS comprueba la web en `.pages.dev`, incluidos vídeos en ve
 - Botón único de WhatsApp en el cierre. El botón usa enlace directo a WhatsApp.
 - Verifica autorizaciones y anonimización de menores antes de publicar los vídeos.
 - Si el repositorio es público, los MP4 también serán públicamente accesibles.
+
+
+## Cambios de esta versión
+- Vídeos situados inmediatamente después del bloque «El problema», antes de «Nuestra petición» y «Documentación».
+- Contador flotante compacto «XXX firmas recogidas» y botón «Firmar» con aire. Si falla la consulta aparece «—», nunca un total inventado.
+- Apps Script lee `TOTAL APOYOS!A2` del documento original.
+- **Para que aparezca el número**: verificar que la URL `/exec` devuelve JSON; en Cloudflare Pages > Settings > Variables and Secrets, variable `APPS_SCRIPT_URL` con la URL terminada en `/exec` (Production); volver a desplegar; probar `/api/firmas`. Si responde 503 falta la variable, si responde 502 hay error de consulta a Google.
