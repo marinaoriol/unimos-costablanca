@@ -1,8 +1,6 @@
-# Cabeceras para archivos estáticos de Cloudflare Pages.
-# No incluye CSP restrictiva para no romper los scripts y estilos inline ni los enlaces.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
-  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
-
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Cross-Origin-Opener-Policy: same-origin
