@@ -269,7 +269,7 @@ document.querySelectorAll('.lang').forEach(b=>b.addEventListener('click',refresh
   button.disabled=true;result.textContent='';
   const payload={nombre:form.elements.namedItem("nombre").value,apellidos:form.elements.namedItem("apellidos").value,dni:form.elements.namedItem("dni").value,email:form.elements.namedItem("email").value,adhesion:form.elements.namedItem("adhesion").checked,consentimiento:form.elements.namedItem("consentimiento").checked,idioma:lang,turnstileToken:token};
   try{const r=await fetch('/api/firmar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const data=await r.json();
-   if(r.ok){result.textContent=t.formSuccess;form.reset();refreshCounter();}
+   if(r.ok){form.reset();window.location.assign('/gracias.html?lang='+encodeURIComponent(lang));return;}
    else if(r.status===409){result.textContent=t.formDuplicate;}else{result.textContent=t.formError;}
   }catch(e){result.textContent=t.formError;}finally{button.disabled=false;if(window.turnstile)window.turnstile.reset();}
  });
