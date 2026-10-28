@@ -177,7 +177,7 @@
 <label><input type="checkbox" name="consentimiento" required/><span data-t="formConsent">Consiento el tratamiento de mis datos para gestionar y presentar esta petición ante las administraciones indicadas.</span></label>
 <p class="form-help" data-t="formBrief">Responsable: Yaiza Gálvez. Finalidad: gestionar los apoyos y presentar la petición a la Generalitat de Catalunya y al Ayuntamiento de Castellbisbal. Base jurídica: consentimiento. Puedes ejercer tus derechos escribiendo a yaizagalvez@hotmail.com.</p>
 <a href="privacidad.html" data-t="formPrivacy">CONSULTAR POLÍTICA DE PRIVACIDAD ↗</a></div>
-<div class="cf-turnstile" data-sitekey="0x4AAAAAAFpabUekpw5zgo_B" data-action="firmar"></div>
+<div id="turnstile-widget" class="cf-turnstile"></div>
 <button class="btn" type="submit" id="send-signature" data-t="formSubmit">ENVIAR MI ADHESIÓN ↗</button><p id="form-result" role="status" aria-live="polite"></p>
 </form></div></div></section>
 <section class="content sign-in-person" id="firma-presencial" aria-labelledby="sign-person-heading"><div class="wrap sign-in-person-grid"><div>
@@ -255,11 +255,11 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshCou
 document.querySelectorAll('.lang').forEach(b=>b.addEventListener('click',refreshCounter));
 </script>
 
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 <script>
 (async function(){
  const closed=document.getElementById('form-closed'),form=document.getElementById('petition-form');
- try{const r=await fetch('/api/estado',{cache:'no-store'});const x=await r.json();if(r.ok&&x.enabled===true){closed.hidden=true;form.hidden=false;}}catch(e){}
+ try{const r=await fetch('/api/estado',{cache:'no-store'});const x=await r.json();if(r.ok&&x.enabled===true){closed.hidden=true;form.hidden=false;const start=()=>{if(window.turnstile){window.turnstile.render('#turnstile-widget',{sitekey:x.siteKey,action:'firmar'});}else{setTimeout(start,100);}};start();}}catch(e){}
  form.addEventListener('submit',async e=>{
   e.preventDefault();const lang=document.documentElement.lang;const t=translations[lang]||translations.es;
   const result=document.getElementById('form-result'),button=document.getElementById('send-signature');

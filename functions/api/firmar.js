@@ -19,12 +19,14 @@ export async function onRequestPost({request,env}){
  if(!p||typeof p!=='object')return reply({error:'invalid'},400);
  const nombre=String(p.nombre||'').trim(),apellidos=String(p.apellidos||'').trim(),email=String(p.email||'').trim().toLowerCase(),dni=validDoc(String(p.dni||''));
  if(!dni||nombre.length<2||nombre.length>80||apellidos.length<2||apellidos.length>120||email.length>254||(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))||p.adhesion!==true||p.consentimiento!==true||!['es','ca','en'].includes(p.idioma)||typeof p.turnstileToken!=='string'||p.turnstileToken.length<10||p.turnstileToken.length>2048)return reply({error:'invalid'},400);
- const origin=request.headers.get('origin');if(origin&&origin!=='https://www.unimoscostablanca.com')return reply({error:'origin'},403);
+ const hostname=new URL(request.url).hostname;
+ const testing=hostname==='unimos-costablanca-test.pages.dev' && env.TURNSTILE_SITE_KEY==='1x00000000000000000000AA';
+ const origin=request.headers.get('origin');if(origin&&new URL(origin).hostname!==hostname)return reply({error:'origin'},403);
  let check;try{
   const r=await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({secret:env.TURNSTILE_SECRET,response:p.turnstileToken})});
   check=await r.json();
  }catch{return reply({error:'verification_unavailable'},503)}
- if(!check.success||check.hostname!=='www.unimoscostablanca.com'||check.action!=='firmar')return reply({error:'verification_failed'},400);
+ if(!check.success||(!testing&&(check.hostname!==hostname||check.action!=='firmar')))return reply({error:'verification_failed'},400);
  try{
   if(!/^[a-f0-9]{64}$/i.test(env.DATA_ENCRYPTION_KEY)||!/^[a-f0-9]{64}$/i.test(env.DNI_HMAC_KEY))return reply({error:'not_configured'},503);
   const cryptoObj=globalThis.crypto;
