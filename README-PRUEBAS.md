@@ -11,3 +11,4 @@ PRUEBAS DE UNIMOS COSTABLANCA
 9. Reestablecer FIRMAS_ENABLED=false en TEST. No activar producción: aún faltan exportación, borrado, validación legal e historial.
 
 ADVERTENCIA: las claves dummy solo prueban integración, no protección real anti-bots. El backend acepta datos ficticios mientras test esté activo. No compartir la URL durante pruebas.
+Actualización de configuración de pruebas
